@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import logo from './question.png';
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      kittyId: null,
+      kittyId: "",
+      kittyEntered: false,
     }
   }
 
@@ -17,24 +20,44 @@ class App extends Component {
 
   _handleSubmit = (event) => {
     event.preventDefault();
+    this.setState({
+      kittyEntered: true,
+    });
   }
 
-  render() {
-    let headerText = "Is it rare?";
+  _enterKitty = () => {
+    let headerText = "Is it rare";
 
     return (
-      <div className="App">
+      <div>
         <header className="App-header">
+          <img src={logo} className="Question" alt="logo" />
           <div>{headerText}</div>
           <form onSubmit={this._handleSubmit}>
-            <div className="form-group row">
-              <input type="text" className="form-control"
+            <div className="form-group row Kitty-id-form">
+              <input type="text" className="form-control Kitty-id"
                 value={this.state.kittyId}
                 onChange={this._handleId} placeholder="Kitty id" />
               <input type="submit" className="btn btn-primary" value="find out" />
             </div>
           </form>
         </header>
+      </div>
+    );
+  }
+
+  render() {
+    let kittyEntered = this.state.kittyEntered;
+    let body;
+    if (kittyEntered) {
+      body = (<div></div>);
+    } else {
+      body = this._enterKitty();
+    }
+
+    return (
+      <div className="App">
+        {body}
       </div>
     );
   }
