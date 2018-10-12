@@ -90,6 +90,7 @@ export function cattributes(binary) {
   };
 }
 
+
 function getMouth(kai) {
   switch(kai) {
     case '1': return 'whixtensions';
@@ -297,6 +298,20 @@ function getBody(kai) {
     case 'o': return 'laperm';
     case 'p': return 'persian';
     case 't': return 'manx';
+    default: return 'unknown';
+  }
+}
+
+export function mapToTrait(feature, kai) {
+  switch (feature) {
+    case 'mouth': return getMouth(kai);
+    case 'color': return getColor(kai);
+    case 'pattern_color': return getPatternColor(kai);
+    case 'body_color': return getBodyColor(kai);
+    case 'eye_type': return getEyeType(kai);
+    case 'eye_color': return getEyeColor(kai);
+    case 'pattern': return getPattern(kai);
+    case 'body': return getBody(kai);
     default: return 'unknown';
   }
 }

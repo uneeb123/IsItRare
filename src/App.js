@@ -4,7 +4,7 @@ import Web3 from 'web3';
 import './App.css';
 
 import logo from './question.png';
-import { cattributes } from './parse';
+import { cattributes, mapToTrait } from './parse';
 
 const BigNumber = require('bignumber.js');
 
@@ -188,6 +188,19 @@ class App extends Component {
     );
   }
 
+  _getTraits = (cattributes) => {
+    return {
+      mouth: mapToTrait('mouth', cattributes.mouth),
+      color: mapToTrait('color', cattributes.color),
+      pattern_color: mapToTrait('pattern_color', cattributes.pattern_color),
+      body_color: mapToTrait('body_color', cattributes.body_color),
+      eye_type: mapToTrait('eye_type', cattributes.eye_type),
+      eye_color: mapToTrait('eye_color', cattributes.eye_color),
+      pattern: mapToTrait('pattern', cattributes.pattern),
+      body: mapToTrait('body', cattributes.body),
+    }
+  }
+
   _kittyInformation = () => {
     function formatDate(date) {
       var monthNames = [
@@ -212,7 +225,7 @@ class App extends Component {
 
     var BNGenes = new BigNumber(this.state.kittyGenes);
     var kittyCattributes = cattributes(BNGenes.toString(2));
-    console.log(kittyCattributes);
+    console.log(this._getTraits(kittyCattributes));
 
     return (
       <div className="Kitty-info">
