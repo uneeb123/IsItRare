@@ -4,6 +4,12 @@ import Web3 from 'web3';
 import './App.css';
 
 import logo from './question.png';
+import { cattributes } from './parse';
+
+const BigNumber = require('bignumber.js');
+
+const KittyCoreContractABI = require('./KittyCore.abi');
+const KittyCoreContractAddress = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d";
 
 const cryptoKittyBaseUrl = "http://api.cryptokitties.co/kitties/";
 
@@ -16,6 +22,7 @@ class App extends Component {
       kittyName: null,
       kittyBio: null,
       kittyGen: null,
+      kittyGenes: null,
       kittyCreatedAt: null,
       kittyEntered: false,
       kittyLoaded: false,
@@ -26,6 +33,8 @@ class App extends Component {
     };
     if (Web3.givenProvider) {
       this.web3 = new Web3(Web3.givenProvider);
+      this.kittyContract = new this.web3.eth.Contract(
+        KittyCoreContractABI, KittyCoreContractAddress);
     } else {
       this.web3 = null;
     }
@@ -111,14 +120,22 @@ class App extends Component {
     event.preventDefault();
     this._fetchKittyInfo(this.state.kittyId)
       .then((kitty) => {
-        this.setState({
-          kittyEntered: true,
-          kittyImgUrl: kitty.image_url,
-          kittyName: kitty.name,
-          kittyBio: kitty.bio,
-          kittyGen: kitty.generation,
-          kittyCreatedAt: kitty.created_at,
-        });
+        this.kittyContract.methods.getKitty(this.state.kittyId)
+          .call({from: this.state.account})
+          .then((result) => {
+            this.setState({
+              kittyGenes: result.genes,
+              kittyEntered: true,
+              kittyImgUrl: kitty.image_url,
+              kittyName: kitty.name,
+              kittyBio: kitty.bio,
+              kittyGen: kitty.generation,
+              kittyCreatedAt: kitty.created_at,
+            });
+          })
+          .catch((e) => {
+            console.error(e);
+          });
       })
       .catch((e) => {
         console.error(e);
@@ -190,7 +207,12 @@ class App extends Component {
     let kittyName = this.state.kittyName;
     let kittyImgUrl = this.state.kittyImgUrl;
     let kittyBio = this.state.kittyBio;
+    let kittyGenes = this.state.kittyGenes;
     let kittyCreatedAt = formatDate(new Date(this.state.kittyCreatedAt));
+
+    var BNGenes = new BigNumber(this.state.kittyGenes);
+    var kittyCattributes = cattributes(BNGenes.toString(2));
+    console.log(kittyCattributes);
 
     return (
       <div className="Kitty-info">
@@ -219,6 +241,9 @@ class App extends Component {
               </div>
             </div>
           </div>
+        </div>
+        <div className="row">
+      {kittyGenes}
         </div>
       </div>
   </div>
