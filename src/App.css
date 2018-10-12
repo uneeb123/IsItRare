@@ -1,21 +1,28 @@
-.App {
+body {
   background-color: #ed8e8e;
+}
+
+.App {
   font-family: 'Anonymous Pro', monospace;
   text-align: center;
 }
 
 .App-header {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(18px + 2vmin);
   color: white;
+  min-height: 100vh;
 }
 
 .Kitty-id {
   margin: 20px;
+}
+
+.Kitty-info {
+  min-height: 100vh;
 }
 
 .Kitty-id-form {
@@ -27,4 +34,38 @@
 
 .Question {
   height:100px;
+}
+
+.Kitty-img {
+  height:100%;
+  width:100%;
+}
+
+.Kitty-basic {
+  border:5px solid red;
+  background-color:#bee8e7;
+  width:300px;
+  border-radius:40px;
+}
+
+.Kitty-info-more {
+  padding:20px;
+  margin:10px;
+  background-color: white;
+}
+
+.Kitty-container {
+  margin:50px;
+}
+
+.Kitty-label {
+  font-weight: bold;
+}
+
+.Kitty-text {
+  text-align: left;
+}
+
+.Kitty-row {
+  margin:10px;
 }
