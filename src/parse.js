@@ -180,6 +180,7 @@ function getColor(kai) {
     case '5': return 'granitegrey';
     case '7': return 'kittencream';
     case '8': return 'emeraldgreen';
+    case '9': return 'kalahari';
     case 'a': return 'shale';
     case 'b': return 'purplehaze';
     case 'd': return 'azaleablush';

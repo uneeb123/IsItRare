@@ -69,3 +69,17 @@ body {
 .Kitty-row {
   margin:10px;
 }
+
+.Kitty-details {
+  background-color: white;
+  margin-top:50px;
+  padding:20px;
+}
+
+.Kitty-trait-label {
+  font-weight: bold;
+}
+
+.Trait-img {
+  height: 100px;
+}

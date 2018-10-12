@@ -4,6 +4,15 @@ import Web3 from 'web3';
 import './App.css';
 
 import logo from './question.png';
+import mouth_img from './resources/mouth.png';
+import color_img from './resources/color.png';
+import pattern_color_img from './resources/pattern_color.png';
+import body_color_img from './resources/body_color.png';
+import eye_type_img from './resources/eye_type.png';
+import eye_color_img from './resources/eye_color.png';
+import pattern_img from './resources/pattern.png';
+import body_img from './resources/body.png';
+
 import { cattributes, mapToTrait } from './parse';
 
 const BigNumber = require('bignumber.js');
@@ -201,6 +210,67 @@ class App extends Component {
     }
   }
 
+  _geneInformation = (cattributes) => {
+    var traits = this._getTraits(cattributes);
+    let mouth = traits.mouth;
+    let color = traits.color;
+    let pattern_color = traits.pattern_color;
+    let body_color = traits.body_color;
+    let eye_type = traits.eye_type;
+    let eye_color = traits.eye_color;
+    let pattern = traits.pattern;
+    let body = traits.body;
+
+    return (
+      <div className="container Kitty-details">
+        <div className="row">
+          <div className="col-3">
+            <div className="Kitty-trait-label">mouth</div>
+            <img className="Trait-img" src={mouth_img} alt="mouth" />
+            <div>{mouth}</div>
+          </div>
+          <div className="col-3">
+            <div className="Kitty-trait-label">accent color</div>
+            <img className="Trait-img" src={color_img} alt="color" />
+            <div>{color}</div>
+          </div>
+          <div className="col-3">
+            <div className="Kitty-trait-label">highlight color</div>
+            <img className="Trait-img" src={pattern_color_img} alt="pattern" />
+            <div>{pattern_color}</div>
+          </div>
+          <div className="col-3">
+            <div className="Kitty-trait-label">base color</div>
+            <img className="Trait-img" src={body_color_img} alt="body_color" />
+            <div>{body_color}</div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-3">
+            <div className="Kitty-trait-label">eye shape</div>
+            <img className="Trait-img" src={eye_type_img} alt="eye_type" />
+            <div>{eye_type}</div>
+          </div>
+          <div className="col-3">
+            <div className="Kitty-trait-label">eye color</div>
+            <img className="Trait-img" src={eye_color_img} alt="eye_color" />
+            <div>{eye_color}</div>
+          </div>
+          <div className="col-3">
+            <div className="Kitty-trait-label">pattern</div>
+            <img className="Trait-img" src={pattern_img} alt="pattern" />
+            <div>{pattern}</div>
+          </div>
+          <div className="col-3">
+            <div className="Kitty-trait-label">fur</div>
+            <img className="Trait-img" src={body_img} alt="body" />
+            <div>{body}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   _kittyInformation = () => {
     function formatDate(date) {
       var monthNames = [
@@ -220,12 +290,12 @@ class App extends Component {
     let kittyName = this.state.kittyName;
     let kittyImgUrl = this.state.kittyImgUrl;
     let kittyBio = this.state.kittyBio;
-    let kittyGenes = this.state.kittyGenes;
     let kittyCreatedAt = formatDate(new Date(this.state.kittyCreatedAt));
 
     var BNGenes = new BigNumber(this.state.kittyGenes);
     var kittyCattributes = cattributes(BNGenes.toString(2));
-    console.log(this._getTraits(kittyCattributes));
+
+    var geneInfo = this._geneInformation(kittyCattributes);
 
     return (
       <div className="Kitty-info">
@@ -256,7 +326,7 @@ class App extends Component {
           </div>
         </div>
         <div className="row">
-      {kittyGenes}
+          {geneInfo}
         </div>
       </div>
   </div>
