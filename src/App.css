@@ -55,7 +55,7 @@ body {
 }
 
 .Kitty-container {
-  margin:50px;
+  margin:20px;
 }
 
 .Kitty-label {
@@ -73,13 +73,21 @@ body {
 .Kitty-details {
   background-color: white;
   margin-top:50px;
+  margin-right:10px;
+  margin-left:10px;
   padding:20px;
 }
 
 .Kitty-trait-label {
   font-weight: bold;
+  font-size: 1.2em;
 }
 
 .Trait-img {
   height: 100px;
+}
+
+.Trait-percent {
+  font-weight: bold;
+  color: red;
 }

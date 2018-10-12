@@ -13,12 +13,14 @@ import eye_color_img from './resources/eye_color.png';
 import pattern_img from './resources/pattern.png';
 import body_img from './resources/body.png';
 
+
 import { cattributes, mapToTrait } from './parse';
 
 const BigNumber = require('bignumber.js');
 
 const KittyCoreContractABI = require('./KittyCore.abi');
 const KittyCoreContractAddress = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d";
+const kittyData = require('./data');
 
 const cryptoKittyBaseUrl = "http://api.cryptokitties.co/kitties/";
 
@@ -209,17 +211,22 @@ class App extends Component {
       body: mapToTrait('body', cattributes.body),
     }
   }
+  
+  _traitsData = (traits) => {
+    var total = 1088074;
+    var percentage = {};
+    var keys = Object.keys(traits);
+    keys.forEach((key) => {
+      var value = kittyData[key][traits[key]];
+      percentage[key] = value/total*100;
+    });
+    console.log(percentage);
+    return percentage;
+  }
 
   _geneInformation = (cattributes) => {
-    var traits = this._getTraits(cattributes);
-    let mouth = traits.mouth;
-    let color = traits.color;
-    let pattern_color = traits.pattern_color;
-    let body_color = traits.body_color;
-    let eye_type = traits.eye_type;
-    let eye_color = traits.eye_color;
-    let pattern = traits.pattern;
-    let body = traits.body;
+    let traits = this._getTraits(cattributes);
+    let traitsPercent = this._traitsData(cattributes); 
 
     return (
       <div className="container Kitty-details">
@@ -227,44 +234,52 @@ class App extends Component {
           <div className="col-3">
             <div className="Kitty-trait-label">mouth</div>
             <img className="Trait-img" src={mouth_img} alt="mouth" />
-            <div>{mouth}</div>
+            <div>{traits.mouth}</div>
+            <div className="Trait-percent">{traitsPercent.mouth.toFixed(2)}%</div>
           </div>
           <div className="col-3">
             <div className="Kitty-trait-label">accent color</div>
             <img className="Trait-img" src={color_img} alt="color" />
-            <div>{color}</div>
+            <div>{traits.color}</div>
+            <div className="Trait-percent">{traitsPercent.color.toFixed(2)}%</div>
           </div>
           <div className="col-3">
             <div className="Kitty-trait-label">highlight color</div>
             <img className="Trait-img" src={pattern_color_img} alt="pattern" />
-            <div>{pattern_color}</div>
+            <div>{traits.pattern_color}</div>
+            <div className="Trait-percent">{traitsPercent.pattern_color.toFixed(2)}%</div>
           </div>
           <div className="col-3">
             <div className="Kitty-trait-label">base color</div>
             <img className="Trait-img" src={body_color_img} alt="body_color" />
-            <div>{body_color}</div>
+            <div>{traits.body_color}</div>
+            <div className="Trait-percent">{traitsPercent.body_color.toFixed(2)}%</div>
           </div>
         </div>
         <div className="row">
           <div className="col-3">
             <div className="Kitty-trait-label">eye shape</div>
             <img className="Trait-img" src={eye_type_img} alt="eye_type" />
-            <div>{eye_type}</div>
+            <div>{traits.eye_type}</div>
+            <div className="Trait-percent">{traitsPercent.eye_type.toFixed(2)}%</div>
           </div>
           <div className="col-3">
             <div className="Kitty-trait-label">eye color</div>
             <img className="Trait-img" src={eye_color_img} alt="eye_color" />
-            <div>{eye_color}</div>
+            <div>{traits.eye_color}</div>
+            <div className="Trait-percent">{traitsPercent.eye_color.toFixed(2)}%</div>
           </div>
           <div className="col-3">
             <div className="Kitty-trait-label">pattern</div>
             <img className="Trait-img" src={pattern_img} alt="pattern" />
-            <div>{pattern}</div>
+            <div>{traits.pattern}</div>
+            <div className="Trait-percent">{traitsPercent.pattern.toFixed(2)}%</div>
           </div>
           <div className="col-3">
             <div className="Kitty-trait-label">fur</div>
             <img className="Trait-img" src={body_img} alt="body" />
-            <div>{body}</div>
+            <div>{traits.body}</div>
+            <div className="Trait-percent">{traitsPercent.body.toFixed(2)}%</div>
           </div>
         </div>
       </div>
