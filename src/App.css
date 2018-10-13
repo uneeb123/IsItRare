@@ -3,8 +3,8 @@ body {
 }
 
 .App {
-  font-family: 'Anonymous Pro', monospace;
   text-align: center;
+  min-height: 100vh;
 }
 
 .App-header {
@@ -14,7 +14,7 @@ body {
   justify-content: center;
   font-size: calc(18px + 2vmin);
   color: white;
-  min-height: 100vh;
+  min-height: 90vh;
 }
 
 .Kitty-id {
@@ -22,7 +22,11 @@ body {
 }
 
 .Kitty-info {
-  min-height: 100vh;
+  font-family: 'Anonymous Pro', monospace;
+}
+
+.Kitty-get {
+  font-family: 'Anonymous Pro', monospace;
 }
 
 .Kitty-id-form {

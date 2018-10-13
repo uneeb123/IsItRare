@@ -183,7 +183,7 @@ class App extends Component {
     }
 
     return (
-      <div>
+      <div className="Kitty-get">
         {error}
         <header className="App-header">
           <img src={logo} className="Question" alt="logo" />
@@ -368,6 +368,9 @@ class App extends Component {
     return (
       <div className="App">
         {body}
+        <a href="https://twitter.com/uneeb123" rel="noopener noreferrer" target="_blank">
+        <i class="fab fa-twitter fa-2x"></i>
+        </a>
       </div>
     );
   }
