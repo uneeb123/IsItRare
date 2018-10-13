@@ -14,14 +14,14 @@ import pattern_img from './resources/pattern.png';
 import body_img from './resources/body.png';
 
 
-import { cattributes, mapToTrait } from './parse';
-import { calculateGrade } from './score';
+import { cattributes, mapToTrait } from './score/parse';
+import { calculateGrade } from './score/score';
 
 const BigNumber = require('bignumber.js');
 
 const KittyCoreContractABI = require('./KittyCore.abi');
 const KittyCoreContractAddress = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d";
-const kittyData = require('./data');
+const kittyData = require('./score/data');
 
 const cryptoKittyBaseUrl = "http://api.cryptokitties.co/kitties/";
 
@@ -231,7 +231,7 @@ class App extends Component {
     let traitsPercent = this._traitsData(cattributes); 
 
     return (
-      <div className="container Kitty-details">
+      <div className="container-fluid Kitty-details">
         <div className="row">
           <div className="col-3">
             <div className="Kitty-trait-label">mouth</div>
@@ -318,7 +318,7 @@ class App extends Component {
 
     return (
       <div className="Kitty-info">
-      <div className="container Kitty-container">
+      <div className="container-fluid Kitty-container">
         <div className="row">
           <div className="col-4">
             <div className="Kitty-basic">
@@ -327,7 +327,7 @@ class App extends Component {
           </div>
           <div className="col-8">
             <div className="Kitty-info-more">
-              <div className="container">
+              <div className="container-fluid">
                 <div className="row Kitty-row">
                   <div className="col-2 Kitty-label">Name</div>
                   <div className="col-10 Kitty-text">{kittyName}</div>
@@ -368,9 +368,14 @@ class App extends Component {
     return (
       <div className="App">
         {body}
-        <a href="https://twitter.com/uneeb123" rel="noopener noreferrer" target="_blank">
-        <i class="fab fa-twitter fa-2x"></i>
-        </a>
+        <div className="footer d-flex justify-content-around">
+          <a href="https://twitter.com/uneeb123" rel="noopener noreferrer" target="_blank">
+            <i className="fab fa-twitter fa-2x"></i>
+          </a>
+          <a href="https://github.com/uneeb123/IsItRare" rel="noopener noreferrer" target="_blank">
+            <i className="fab fa-github fa-2x"></i>
+          </a>
+        </div>
       </div>
     );
   }
