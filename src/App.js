@@ -15,6 +15,7 @@ import body_img from './resources/body.png';
 
 
 import { cattributes, mapToTrait } from './parse';
+import { calculateGrade } from './score';
 
 const BigNumber = require('bignumber.js');
 
@@ -142,6 +143,8 @@ class App extends Component {
               kittyBio: kitty.bio,
               kittyGen: kitty.generation,
               kittyCreatedAt: kitty.created_at,
+              kittyExclusive: kitty.is_exclusive,
+              kittyFancy: kitty.is_fancy,
             });
           })
           .catch((e) => {
@@ -220,7 +223,6 @@ class App extends Component {
       var value = kittyData[key][traits[key]];
       percentage[key] = value/total*100;
     });
-    console.log(percentage);
     return percentage;
   }
 
@@ -311,6 +313,8 @@ class App extends Component {
     var kittyCattributes = cattributes(BNGenes.toString(2));
 
     var geneInfo = this._geneInformation(kittyCattributes);
+    let grade = calculateGrade(kittyCattributes,
+      this.state.kittyExclusive, this.state.kittyFancy);
 
     return (
       <div className="Kitty-info">
@@ -335,6 +339,10 @@ class App extends Component {
                 <div className="row Kitty-row">
                   <div className="col-2 Kitty-label">Birthday</div>
                   <div className="col-10 Kitty-text">{kittyCreatedAt}</div>
+                </div>
+                <div className="row Kitty-row">
+                  <div className="col-2 Kitty-label">Grade</div>
+                  <div className="col-10 Kitty-grade">{grade}</div>
                 </div>
               </div>
             </div>

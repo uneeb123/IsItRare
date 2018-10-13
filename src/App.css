@@ -91,3 +91,10 @@ body {
   font-weight: bold;
   color: red;
 }
+
+.Kitty-grade {
+  text-align: left;
+  font-weight: bold;
+  color: #5b965b;
+  font-size:1.4em;
+}
