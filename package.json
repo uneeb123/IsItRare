@@ -15,7 +15,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "homepage": "http://uneeb123.github.io/IsItRare",
   "eslintConfig": {
     "extends": "react-app"
   },
