@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 import Web3 from 'web3';
+import EnterKitty from './EnterKitty';
 import './App.css';
 
-import logo from './question.png';
 import mouth_img from './resources/mouth.png';
 import color_img from './resources/color.png';
 import pattern_color_img from './resources/pattern_color.png';
@@ -29,7 +29,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      kittyId: "",
       kittyImgUrl: null,
       kittyName: null,
       kittyBio: null,
@@ -122,17 +121,11 @@ class App extends Component {
     });
   }
 
-  _handleId = (event) => {
-    this.setState({
-      kittyId: event.target.value
-    });
-  }
-
-  _handleSubmit = (event) => {
-    event.preventDefault();
-    this._fetchKittyInfo(this.state.kittyId)
+  
+  _fetchKitty = (kittyId) => {
+    this._fetchKittyInfo(kittyId)
       .then((kitty) => {
-        this.kittyContract.methods.getKitty(this.state.kittyId)
+        this.kittyContract.methods.getKitty(kittyId)
           .call({from: this.state.account})
           .then((result) => {
             this.setState({
@@ -154,52 +147,6 @@ class App extends Component {
       .catch((e) => {
         console.error(e);
       });
-  }
-
-  _enterKitty = () => {
-    let headerText = "Is it rare";
-    let ok;
-    let mmExists = this.state.metamaskExists;
-    let mmLoggedIn = this.state.metamaskLoggedIn;
-    let error;
-
-    if (!mmExists) {
-      error = (
-        <div className="alert alert-light" role="alert">
-          {"Metamask does not exist. You need metamask for this."}
-        </div>
-      );
-      ok = false;
-    }
-    else if (!mmLoggedIn) {
-      error = (
-        <div className="alert alert-light" role="alert">
-          {"Metamask is not logged in. Please log in to continue."}
-        </div>
-      );
-      ok = false;
-    } else {
-      ok = true;
-    }
-
-    return (
-      <div className="Kitty-get">
-        {error}
-        <header className="App-header">
-          <img src={logo} className="Question" alt="logo" />
-          <div>{headerText}</div>
-          <form onSubmit={this._handleSubmit}>
-            <div className="form-group row Kitty-id-form">
-              <input type="text" className="form-control Kitty-id"
-                value={this.state.kittyId}
-                onChange={this._handleId} placeholder="Kitty id" />
-              <input type="submit" className="btn btn-primary"
-                value="let's find out" disabled={!ok} />
-            </div>
-          </form>
-        </header>
-      </div>
-    );
   }
 
   _getTraits = (cattributes) => {
@@ -362,7 +309,12 @@ class App extends Component {
     if (kittyEntered) {
       body = this._kittyInformation();
     } else {
-      body = this._enterKitty();
+      body = (
+        <EnterKitty metamaskExists={this.state.metamaskExists}
+          metamaskLoggedIn={this.state.metamaskLoggedIn}
+          fetchKitty={this._fetchKitty}
+        />
+      );
     }
 
     return (
