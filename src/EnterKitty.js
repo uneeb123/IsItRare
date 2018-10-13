@@ -6,7 +6,7 @@ export default class EnterKitty extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      kittyId: null,
+      kittyId: "",
     };
   }
 
