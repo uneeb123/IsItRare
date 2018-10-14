@@ -87,19 +87,19 @@ export default class KittyInformation extends Component {
           <div className="col-3">
             <div className="Kitty-trait-label">accent color</div>
             <img className="Trait-img" src={color_img} alt="color" />
-            <div>{traits.color}</div>
+            <div>{traits.colortertiary}</div>
             <div className="Trait-percent">{traitsPercent.colortertiary.toFixed(2)}%</div>
           </div>
           <div className="col-3">
             <div className="Kitty-trait-label">highlight color</div>
             <img className="Trait-img" src={pattern_color_img} alt="pattern" />
-            <div>{traits.pattern_color}</div>
+            <div>{traits.colorsecondary}</div>
             <div className="Trait-percent">{traitsPercent.colorsecondary.toFixed(2)}%</div>
           </div>
           <div className="col-3">
             <div className="Kitty-trait-label">base color</div>
             <img className="Trait-img" src={body_color_img} alt="body_color" />
-            <div>{traits.body_color}</div>
+            <div>{traits.colorprimary}</div>
             <div className="Trait-percent">{traitsPercent.colorprimary.toFixed(2)}%</div>
           </div>
         </div>
@@ -107,13 +107,13 @@ export default class KittyInformation extends Component {
           <div className="col-3">
             <div className="Kitty-trait-label">eye shape</div>
             <img className="Trait-img" src={eye_type_img} alt="eye_type" />
-            <div>{traits.eye_type}</div>
+            <div>{traits.eyes}</div>
             <div className="Trait-percent">{traitsPercent.eyes.toFixed(2)}%</div>
           </div>
           <div className="col-3">
             <div className="Kitty-trait-label">eye color</div>
             <img className="Trait-img" src={eye_color_img} alt="eye_color" />
-            <div>{traits.eye_color}</div>
+            <div>{traits.coloreyes}</div>
             <div className="Trait-percent">{traitsPercent.coloreyes.toFixed(2)}%</div>
           </div>
           <div className="col-3">
