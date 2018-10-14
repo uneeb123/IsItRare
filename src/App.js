@@ -5,8 +5,8 @@ import EnterKitty from './EnterKitty';
 import KittyInformation from './KittyInformation';
 import './App.css';
 
-const KittyCoreContractABI = require('./KittyCore.abi');
-const KittyCoreContractAddress = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d";
+// const KittyCoreContractABI = require('./KittyCore.abi');
+// const KittyCoreContractAddress = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d";
 
 const cryptoKittyBaseUrl = "http://api.cryptokitties.co/kitties/";
 
@@ -20,11 +20,15 @@ class App extends Component {
       metamaskLoggedIn: false,
       metamaskListening: false,
       account: null,
+      kittyData: null,
+      kittyDataLoaded: false,
     };
     if (Web3.givenProvider) {
       this.web3 = new Web3(Web3.givenProvider);
-      this.kittyContract = new this.web3.eth.Contract(
-        KittyCoreContractABI, KittyCoreContractAddress);
+      /* TODO Disabling this for now
+        this.kittyContract = new this.web3.eth.Contract(
+          KittyCoreContractABI, KittyCoreContractAddress);
+      */
     } else {
       this.web3 = null;
     }
@@ -48,6 +52,17 @@ class App extends Component {
         }
       });
     }
+  }
+
+  componentDidMount() {
+    this._gatherAllKittyData().then((kittyData) => {
+      this.setState({
+        kittyData: kittyData,
+        kittyDataLoaded: true,
+      });
+    }).catch((e) => {
+      console.error(e);
+    });
   }
 
   shouldComponentUpdate() {
@@ -104,41 +119,64 @@ class App extends Component {
   _fetchKitty = (kittyId) => {
     this._fetchKittyInfo(kittyId)
       .then((kitty) => {
-        this.kittyContract.methods.getKitty(kittyId)
-          .call({from: this.state.account})
-          .then((result) => {
-            this.setState({
-              kittyGenes: result.genes,
-              kittyEntered: true,
-              kitty: kitty,
-            });
-          })
-          .catch((e) => {
-            console.error(e);
-          });
+        this.setState({
+          kittyEntered: true,
+          kitty: kitty,
+        });
       })
       .catch((e) => {
         console.error(e);
       });
   }
 
- render() {
+  _gatherAllKittyData = () => {
+    return new Promise((resolve, reject) => {
+      let dataUrl = "https://api.cryptokitties.co/cattributes";
+      var kittyData = {};
+
+      var t0 = performance.now();
+      fetch(dataUrl).then((response) => {
+        response.json().then((allKitties) => {
+          allKitties.forEach((eachKitty) => {
+            if (kittyData[eachKitty.type]) {
+              kittyData[eachKitty.type][eachKitty.description] = eachKitty.total;
+            } else {
+              kittyData[eachKitty.type] = {}
+              kittyData[eachKitty.type][eachKitty.description] = eachKitty.total;
+            }
+          });
+          var t1 = performance.now();
+          console.log("Aggregated kitty data loaded in " + ((t1 - t0)/1000).toFixed(2) + " seconds.");
+          resolve(kittyData);
+        }).catch((e) => {
+          reject(e);
+        });
+      }).catch((e) => {
+        reject(e);
+      });
+    });
+  }
+
+  render() {
     let kittyEntered = this.state.kittyEntered;
+    let dataLoaded = this.state.kittyDataLoaded;
     let body;
     if (kittyEntered) {
       body = (
-        <KittyInformation kitty={this.state.kitty} genes={this.state.kittyGenes}/>
+        <KittyInformation kitty={this.state.kitty} kittyData={this.state.kittyData}/>
       );
     } else {
-      body = (
-        <EnterKitty metamaskExists={this.state.metamaskExists}
-          metamaskLoggedIn={this.state.metamaskLoggedIn}
-          fetchKitty={this._fetchKitty}
-        />
-      );
+      if (dataLoaded) {
+        body = (
+          <EnterKitty metamaskExists={this.state.metamaskExists}
+            metamaskLoggedIn={this.state.metamaskLoggedIn}
+            fetchKitty={this._fetchKitty}
+          />
+        );
+      }
     }
 
-    return (
+   return (
       <div className="App">
         {body}
         <div className="footer d-flex justify-content-around">

@@ -1,5 +1,3 @@
-const data = require('./data');
-
 function sortAttribute(geneForAttributes) {
   var sortedAttribute = [];
   var allGenes = Object.keys(geneForAttributes);
@@ -23,7 +21,7 @@ function sortAttribute(geneForAttributes) {
   return sortedAttribute;
 }
 
-function sortAttributes() {
+function sortAttributes(data) {
   var attributes = Object.keys(data);
   var result = {};
   attributes.forEach((attribute) => {
@@ -33,8 +31,8 @@ function sortAttributes() {
   return result;
 }
 
-function calculateScore(sample) {
-  var sortedTraits = sortAttributes();
+function calculateScore(sample, data) {
+  var sortedTraits = sortAttributes(data);
   var allTraits = Object.keys(sample);
   var geneScore = 0;
   allTraits.forEach((trait) => {
@@ -49,14 +47,14 @@ function calculateScore(sample) {
   return geneScore/allTraits.length;
 }
 
-export function calculateGrade(sample, exclusive, fancy) {
+export function calculateGrade(sample, exclusive, fancy, data) {
   if (exclusive) {
     return 'A+++';
   }
   if (fancy) {
     return 'A++';
   }
-  var score = calculateScore(sample);
+  var score = calculateScore(sample, data);
   var allGrades = ['A++', 'A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'D'];
   for (var i=0; i<allGrades.length; i++) {
     if (score < (i+1)*10) {
