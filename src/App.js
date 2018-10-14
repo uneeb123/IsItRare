@@ -104,6 +104,7 @@ class App extends Component {
   }
 
   _fetchKittyInfo = (kittyId) => {
+    console.log("Kitty id entered: ", kittyId);
     return new Promise((resolve, reject) => {
       let url = cryptoKittyBaseUrl + kittyId;
       fetch(url)
@@ -137,6 +138,9 @@ class App extends Component {
       var t0 = performance.now();
       fetch(dataUrl).then((response) => {
         response.json().then((allKitties) => {
+          if (allKitties.length === 0) {
+            reject("No data loaded");
+          }
           allKitties.forEach((eachKitty) => {
             if (kittyData[eachKitty.type]) {
               kittyData[eachKitty.type][eachKitty.description] = eachKitty.total;
@@ -179,6 +183,7 @@ class App extends Component {
    return (
       <div className="App">
         {body}
+        <footer>
         <div className="footer d-flex justify-content-around">
           <a href="https://twitter.com/uneeb123" rel="noopener noreferrer" target="_blank">
             <i className="fab fa-twitter fa-2x"></i>
@@ -188,6 +193,7 @@ class App extends Component {
             <i className="fab fa-github fa-2x"></i>
           </a>
         </div>
+        </footer>
       </div>
     );
   }
