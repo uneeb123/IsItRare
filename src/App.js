@@ -8,6 +8,7 @@ import './App.css';
 // const KittyCoreContractABI = require('./KittyCore.abi');
 // const KittyCoreContractAddress = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d";
 
+const backupData = require('./score/data');
 const cryptoKittyBaseUrl = "http://api.cryptokitties.co/kitties/";
 
 class App extends Component {
@@ -61,7 +62,11 @@ class App extends Component {
         kittyDataLoaded: true,
       });
     }).catch((e) => {
-      console.error(e);
+      console.log("Falling back to backed up data");
+      this.setState({
+        kittyData: backupData,
+        kittyDataLoaded: true,
+      });
     });
   }
 
@@ -140,18 +145,19 @@ class App extends Component {
         response.json().then((allKitties) => {
           if (allKitties.length === 0) {
             reject("No data loaded");
+          } else {
+            allKitties.forEach((eachKitty) => {
+              if (kittyData[eachKitty.type]) {
+                kittyData[eachKitty.type][eachKitty.description] = eachKitty.total;
+              } else {
+                kittyData[eachKitty.type] = {}
+                kittyData[eachKitty.type][eachKitty.description] = eachKitty.total;
+              }
+            });
+            var t1 = performance.now();
+            console.log("Aggregated kitty data loaded in " + ((t1 - t0)/1000).toFixed(2) + " seconds.");
+            resolve(kittyData);
           }
-          allKitties.forEach((eachKitty) => {
-            if (kittyData[eachKitty.type]) {
-              kittyData[eachKitty.type][eachKitty.description] = eachKitty.total;
-            } else {
-              kittyData[eachKitty.type] = {}
-              kittyData[eachKitty.type][eachKitty.description] = eachKitty.total;
-            }
-          });
-          var t1 = performance.now();
-          console.log("Aggregated kitty data loaded in " + ((t1 - t0)/1000).toFixed(2) + " seconds.");
-          resolve(kittyData);
         }).catch((e) => {
           reject(e);
         });

@@ -9,7 +9,6 @@ import eye_color_img from './resources/eye_color.png';
 import pattern_img from './resources/pattern.png';
 import body_img from './resources/body.png';
 
-// import { cattributes, mapToTrait } from './score/parse';
 import { calculateGrade } from './score/score';
 
 export default class KittyInformation extends Component {
@@ -65,7 +64,14 @@ export default class KittyInformation extends Component {
     var percentage = {};
     let keys = Object.keys(traits);
     keys.forEach((key) => {
-      let value = parseInt(kittyData[key][traits[key]]);
+      let geneQuantity = kittyData[key];
+      let exactGene = traits[key];
+      let value;
+      if (exactGene === 'totesbasic') {
+        value = parseInt(geneQuantity['totesbasic_f'] + geneQuantity['totesbasic_g'] + geneQuantity['totesbasic_p']);
+      } else {
+        value = parseInt(geneQuantity[exactGene]);
+      }
       percentage[key] = value/total*100;
     });
     return percentage;
