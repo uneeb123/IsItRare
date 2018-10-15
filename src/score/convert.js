@@ -1,95 +1,5 @@
-function kaiNotation(str) {
-  switch(str) {
-    case 0: return '1';
-    case 1: return '2';
-    case 2: return '3';
-    case 3: return '4';
-    case 4: return '5';
-    case 5: return '6';
-    case 6: return '7';
-    case 7: return '8';
-    case 8: return '9';
-    case 9: return 'a';
-    case 10: return 'b';
-    case 11: return 'c';
-    case 12: return 'd';
-    case 13: return 'e';
-    case 14: return 'f';
-    case 15: return 'g';
-    case 16: return 'h';
-    case 17: return 'i';
-    case 18: return 'j';
-    case 19: return 'k';
-    case 20: return 'm';
-    case 21: return 'n';
-    case 22: return 'o';
-    case 23: return 'p';
-    case 24: return 'q';
-    case 25: return 'r';
-    case 26: return 's';
-    case 27: return 't';
-    case 28: return 'u';
-    case 29: return 'v';
-    case 30: return 'w';
-    case 31: return 'x';
-    default:
-      console.error("Incorrectly represented binary string");
-  }
-}
-
-function convertToFullSequence(s) {
-  if (s.length > 240) {
-    console.error("Sequence too big");
-    return;
-  }
-  let leadingZerosCount = 240 - s.length;
-  let leadingZeros = [...Array(leadingZerosCount)].map(x=>'0').join('');
-  return leadingZeros+s;
-}
-
-function parseGene(trait) {
-  if (trait.length !== 20) {
-    console.error("Wrongly formatted trait");
-    return;
-  }
-  
-  // it's inversed
-  let gene4 = kaiNotation(parseInt(trait.slice(0,5).join(''),2));
-  let gene3 = kaiNotation(parseInt(trait.slice(5,10).join(''),2));
-  let gene2 = kaiNotation(parseInt(trait.slice(10,15).join(''),2));
-  let gene1 = kaiNotation(parseInt(trait.slice(15,20).join(''),2));
-
-  return {p: gene1, h1: gene2, h2: gene3, h3: gene4}
-}
-
-export function cattributes(binary) {
-  let sequence = convertToFullSequence(binary);
-  let sequenceArray = sequence.split('');
-  // let trait1 = sequenceArray.slice(0,20);
-  // let trait2 = sequenceArray.slice(20,40);
-  // let trait3 = sequenceArray.slice(40,60);
-  let trait4 = sequenceArray.slice(60,80);
-  // let trait5 = sequenceArray.slice(80,100);
-  let trait6 = sequenceArray.slice(100,120);
-  let trait7 = sequenceArray.slice(120,140);
-  let trait8 = sequenceArray.slice(140,160);
-  let trait9 = sequenceArray.slice(160,180);
-  let trait10 = sequenceArray.slice(180,200);
-  let trait11 = sequenceArray.slice(200,220);
-  let trait12 = sequenceArray.slice(220,240);
-
-  return {
-    mouth: parseGene(trait4).p,
-    color: parseGene(trait6).p,
-    pattern_color: parseGene(trait7).p,
-    body_color: parseGene(trait8).p,
-    eye_type: parseGene(trait9).p,
-    eye_color: parseGene(trait10).p,
-    pattern: parseGene(trait11).p,
-    body: parseGene(trait12).p,
-  };
-}
-
+var data = require('./data');
+const fs = require('fs');
 
 function getMouth(kai) {
   switch(kai) {
@@ -303,30 +213,30 @@ function getBody(kai) {
   }
 }
 
-export function mapToTrait(feature, kai) {
+function kaiToTrait(feature, kai) {
   switch (feature) {
     case 'mouth': return getMouth(kai);
     case 'color': return getColor(kai);
-    case 'pattern_color': return getPatternColor(kai);
-    case 'body_color': return getBodyColor(kai);
-    case 'eye_type': return getEyeType(kai);
-    case 'eye_color': return getEyeColor(kai);
+    case 'colorsecondary': return getPatternColor(kai);
+    case 'colorprimary': return getBodyColor(kai);
+    case 'eyes': return getEyeType(kai);
+    case 'coloreyes': return getEyeColor(kai);
     case 'pattern': return getPattern(kai);
     case 'body': return getBody(kai);
     default: return 'unknown';
   }
 }
 
-export function ckTraitType(type) {
-  switch (type) {
-    case 'mouth': return 'mouth';
-    case 'color': return 'color';
-    case 'pattern_color': return 'colorsecondary';
-    case 'body_color': return 'colorprimary';
-    case 'eye_type': return 'eyes';
-    case 'eye_color': return 'coloreyes';
-    case 'pattern': return 'pattern';
-    case 'body': return 'body';
-    default: return type;
-  }
-}
+var keys = Object.keys(data);
+var result = {};
+keys.forEach((key) => {
+  var traits = Object.keys(data[key]);
+  result[key] = {};
+  traits.forEach((kai) => {
+    var trait = kaiToTrait(key, kai);
+    result[key][trait] = data[key][kai];
+  });
+});
+fs.writeFile('converted.json', JSON.stringify(result), 'utf8', function(e, d) {
+  console.log("done");
+});
